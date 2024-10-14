@@ -1,3 +1,3 @@
-import logoImage from './logo.png'
+import logoImage from '../img/logo.png'
 
 export {logoImage}

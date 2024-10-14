@@ -1,12 +1,15 @@
 import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
 interface IMainBoxProps {
-    children: React.ReactNode
+  children: React.ReactNode
+  size?: 'lg'
+  className?: string
 }
 
-function MainBox({children}: IMainBoxProps) {
+function MainBox({ children, className, size }: IMainBoxProps) {
   return (
-    <div className='w-100 m-auto bg-white p-4 rounded' style={{maxWidth: '700px'}}>{children}</div>
+    <div className={twMerge('max-w-[700px] mx-auto bg-white p-6 rounded max-h-[700px] h-fit flex flex-col gap-4', size === "lg" && 'w-[700px]', className)}>{children}</div>
   )
 }
 

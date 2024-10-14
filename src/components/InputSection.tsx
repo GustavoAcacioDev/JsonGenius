@@ -1,14 +1,13 @@
+import { Button } from '../ui/shadcn/Button'
+import { Input } from '../ui/shadcn/Input'
 import React from 'react'
 
 function InputSection() {
     return (
-        <form className='d-flex flex-column' style={{gap: '16px'}}>
-            <div className="form-group">
-                <label htmlFor="inputQuestion">O que deseja?</label>
-                <input type="email" className="form-control" id="inputQuestion" aria-describedby="questionInput" placeholder="Insira a sua pergunta" />
-            </div>
-
-            <button type="submit" className="btn btn-primary">Perguntar</button>
+        <form className='w-full flex flex-col gap-2'>
+            <h2 className='text-center text-xl font-semibold text-gray-800'>Como posso ajudar?</h2>
+            <Input className='' placeholder='Digite sua pergunta' />
+            <Button variant={'default'}>Perguntar</Button>
         </form>
     )
 }

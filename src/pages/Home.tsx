@@ -2,6 +2,7 @@ import PageContainer from "../components/PageContainer";
 import { logoImage } from "../assets/img";
 import InputSection from "../components/InputSection";
 import MainBox from "../components/MainBox";
+import React, { useEffect } from 'react';
 
 function Home() {
   return (

@@ -3,8 +3,13 @@ import { logoImage } from "../assets/img";
 import InputSection from "../components/InputSection";
 import MainBox from "../components/MainBox";
 import React, { useEffect } from 'react';
+import { fetchHelloWorld } from "../services/hello-world";
 
 function Home() {
+  useEffect(() => {
+    fetchHelloWorld();
+}, []);
+
   return (
     <PageContainer>
       <section className="flex items-center min-h-screen">

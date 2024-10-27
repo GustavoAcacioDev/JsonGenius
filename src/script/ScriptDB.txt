@@ -1,0 +1,43 @@
+-- Criação da tabela de usuários para referência
+CREATE TABLE usuarios (
+    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    nome NVARCHAR(100) NOT NULL
+);
+
+-- Criação da tabela de chats para referência
+CREATE TABLE chats (
+    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    descricao NVARCHAR(100) NOT NULL
+);
+
+-- Criação da tabela de logs de interação com foreign keys para chat_id e usuario_id
+CREATE TABLE log_interacoes (
+    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    usuario_id UNIQUEIDENTIFIER NOT NULL,
+    nome_usuario NVARCHAR(100) NOT NULL,
+    prompt_entrada NVARCHAR(MAX) NOT NULL,
+    resposta_chat NVARCHAR(MAX) NOT NULL,
+    data_pergunta DATETIME DEFAULT GETDATE(),
+    chat_id UNIQUEIDENTIFIER NOT NULL,
+    -- Definição das chaves estrangeiras
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (chat_id) REFERENCES chats(id)
+);
+
+-- Inserção de registros de exemplo nas tabelas usuários e chats
+INSERT INTO usuarios (nome) VALUES ('João Silva');
+INSERT INTO chats (descricao) VALUES ('Chat sobre geografia');
+
+-- Inserção de um registro de exemplo na tabela log_interacoes
+INSERT INTO log_interacoes (usuario_id, nome_usuario, prompt_entrada, resposta_chat, chat_id)
+VALUES
+    (
+        (SELECT id FROM usuarios WHERE nome = 'João Silva'), 
+        'João Silva', 
+        'Qual é a capital da França?', 
+        'A capital da França é Paris.', 
+        (SELECT id FROM chats WHERE descricao = 'Chat sobre geografia')
+    );
+
+-- Consultar todos os registros de log
+SELECT * FROM log_interacoes;

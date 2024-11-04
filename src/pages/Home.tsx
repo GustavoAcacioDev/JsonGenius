@@ -4,10 +4,11 @@ import InputSection from "../components/InputSection";
 import MainBox from "../components/MainBox";
 import React, { useEffect } from 'react';
 import { fetchHelloWorld } from "../services/hello-world";
+import { getChat } from "../services/get-chat-logs";
 
 function Home() {
   useEffect(() => {
-    fetchHelloWorld();
+    getChat();
 }, []);
 
   return (

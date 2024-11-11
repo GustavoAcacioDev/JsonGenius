@@ -1,9 +1,7 @@
-import Minify from "../pages/Minify";
-import Format from "../pages/Format";
 import Home from "../pages/Home";
-import Validate from "../pages/Validate";
 import React from "react";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
+import ChatPage from "../pages/Chat";
 
 
 
@@ -12,9 +10,7 @@ const Routing = () => {
         <BrowserRouter>
             <Routes>
                 <Route Component={Home} path="/" />
-                <Route Component={Format} path="/format" />
-                <Route Component={Minify} path="/minify" />
-                <Route Component={Validate} path="/validate" />
+                <Route Component={ChatPage} path="/chat" />
             </Routes>
         </BrowserRouter>
     )

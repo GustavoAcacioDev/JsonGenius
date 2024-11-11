@@ -1,35 +1,99 @@
-import PageContainer from "../components/PageContainer";
-import { logoImage } from "../assets/img";
-import InputSection from "../components/InputSection";
-import MainBox from "../components/MainBox";
 import React, { useEffect } from 'react';
-import { fetchHelloWorld } from "../services/hello-world";
-import { getChat } from "../services/get-chat-logs";
+import { Check, Code, GitCompare, Hammer, Search, Zap } from "lucide-react";
+import { Button } from "../ui/shadcn/button";
+import FeaturesCard, { TFeaturesCardProp } from '../components/FeaturesCard';
+import Header from '../components/Header/Header';
+
+const featuresList: TFeaturesCardProp[] = [
+  {
+    title: 'Validar JSON',
+    description: 'Certifique-se de que seu JSON esteja formatado corretamente e livre de erros de sintaxe.',
+    color: 'green',
+    Icon: Check
+  },
+  {
+    title: 'Formatar JSON',
+    description: 'Embeleze seu JSON para melhorar a legibilidade e facilitar a edição.',
+    color: 'yellow',
+    Icon: Zap
+  },
+  {
+    title: 'Minificar JSON',
+    description: 'Compacte seu JSON removendo espaços em branco e comentários desnecessários.',
+    color: 'blue',
+    Icon: Hammer
+  },
+  {
+    title: 'Transformar JSON',
+    description: 'Aplique transformações complexas usando expressões JSONPath.',
+    color: 'purple',
+    Icon: Code
+  },
+  {
+    title: 'Analisar JSON',
+    description: 'Gere esquemas e obtenha insights sobre sua estrutura JSON.',
+    color: 'indigo',
+    Icon: Search
+  },
+  {
+    title: 'Comparar JSON',
+    description: 'Identifique diferenças entre dois objetos JSON de forma rápida e fácil.',
+    color: 'red',
+    Icon: GitCompare
+  },
+]
 
 function Home() {
-  useEffect(() => {
-    getChat();
-}, []);
-
   return (
-    <PageContainer>
-      <section className="flex items-center min-h-screen">
-        <MainBox>
-          <h1 className="text-center font-bold text-3xl text-gray-800">JSON Genius</h1>
-          <div className="flex gap-6">
-            <img src={logoImage} alt="Logo do JSON Genius" className='w-64 h-64' />
-            <p className="text-gray-700 font-semibold text-sm">JSON Genius é um aplicativo completo e intuitivo projetado para facilitar todas as suas interações com JSON. Seja você um desenvolvedor ou alguém que lida regularmente com dados em JSON, o JSON Genius oferece ferramentas poderosas para simplificar seu trabalho. Com ele, você pode rapidamente formatar JSONs bagunçados para uma visualização clara e organizada, preencher automaticamente JSONs com dados, extrair tipos e interfaces para usar em linguagens como TypeScript, além de validar a estrutura do seu JSON e detectar erros.
-            </p>
+    <div className="flex flex-col min-h-screen">
+      <Header />
+
+      <main className="flex-grow container mx-auto px-6 py-8">
+        <section className="text-center mb-12">
+          <h2 className="text-4xl font-bold mb-4">A solução principal para seus problemas com JSON!</h2>
+          <p className="text-xl text-muted-foreground mb-6">Valide, formate, compare e analise, tudo com facilidade!</p>
+          <Button asChild size="md">
+            <a href="/chat">Tente agora</a>
+          </Button>
+        </section>
+
+        <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
+          {
+            featuresList.map((feature) => (
+              <FeaturesCard Icon={feature.Icon} color={feature.color} description={feature.description} title={feature.title} />
+            ))
+          }
+        </section>
+
+        <section className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4">Pronto para solucionar seus problemas com JSON?</h2>
+          <p className="text-lg text-muted-foreground mb-6">Junte-se a uma comunidade de desenvolvedores que já solucionam desafios com JSON de maneira eficiente com o JSON Problem Solver.</p>
+          <div className="flex justify-center space-x-4">
+            <Button asChild variant="default">
+              <a href="/sign-up">Cadastrar-se</a>
+            </Button>
+            <Button asChild variant="outline">
+              <a href="/login">Login</a>
+            </Button>
           </div>
+        </section>
+      </main>
 
-          <p className="text-gray-700 font-semibold text-sm">
-            O aplicativo ainda oferece suporte para minificação, conversão entre JSON e outros formatos, e muito mais, tudo em uma interface amigável e eficiente. JSON Genius é o companheiro ideal para quem precisa lidar com JSON de maneira rápida e inteligente.
-          </p>
-
-          <InputSection />
-        </MainBox>
-      </section>
-    </PageContainer>
+      <footer className="bg-muted py-6">
+        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+          <div className="text-sm text-muted-foreground mb-4 md:mb-0">
+            © 2023 JSON Problem Solver. All rights reserved.
+          </div>
+          <nav>
+            <ul className="flex space-x-4">
+              <li><a href="/privacy" className="text-sm text-muted-foreground hover:underline">Privacy Policy</a></li>
+              <li><a href="/terms" className="text-sm text-muted-foreground hover:underline">Terms of Service</a></li>
+              <li><a href="/faq" className="text-sm text-muted-foreground hover:underline">FAQ</a></li>
+            </ul>
+          </nav>
+        </div>
+      </footer>
+    </div>
   );
 }
 

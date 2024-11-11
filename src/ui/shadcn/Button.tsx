@@ -17,7 +17,7 @@ const buttonVariants = cva(
         destructive:
           'bg-red-500 text-slate-50 hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90',
         outline:
-          'text-sm border-2 leading-sm text-gray-800 font-bold border-gray-300 bg-white hover:bg-gray-200 hover:text-gray-900 hover:border-gray-800 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50',
+          'text-sm border leading-sm text-gray-800 font-bold border-gray-300 bg-white hover:bg-gray-200 hover:text-gray-900 hover:border-gray-800 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50',
         outlineBlue:
           'border-2 border-blue bg-white text-blue hover:ease-in-out hover:duration-300 hover:bg-blue hover:bg-opacity-10 hover:text-blue',
         'outline-red':
@@ -25,9 +25,9 @@ const buttonVariants = cva(
         fillBlue:
           'bg-blue text-white text-sm leading-sm font-bold hover:bg-blue-hover hover:outline hover:outline-gray-800 hover:outline-1 disabled:opacity-50',
         secondary:
-          'bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80',
+          'bg-white text-slate-900 hover:bg-gray-300 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80',
         ghost:
-          '',
+          'hover:bg-gray-300',
         link: 'text-slate-900 underline-offset-4 hover:underline dark:text-slate-50',
       },
       size: {

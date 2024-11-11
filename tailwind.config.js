@@ -51,6 +51,11 @@ module.exports = {
           to: { height: "0" },
         },
       },
+      screens: {
+        desktop: '1367px',
+        laptop: '1024px',
+        tablet: '640px',
+      },
       gridTemplateRows: {
         'auto-1fr': 'auto 1fr',
         'auto-double-1fr': 'auto 1fr 1fr',

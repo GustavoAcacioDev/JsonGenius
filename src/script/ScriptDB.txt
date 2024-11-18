@@ -1,43 +1,44 @@
--- Criação da tabela de usuários para referência
-CREATE TABLE usuarios (
-    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    nome NVARCHAR(100) NOT NULL
+-- Tabela de usuários
+CREATE TABLE users (
+    id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    name NVARCHAR(100) NOT NULL,
+    email NVARCHAR(255) UNIQUE NOT NULL,
+    password_hash NVARCHAR(255),
+    google_id NVARCHAR(255),
+    created_at DATETIME DEFAULT GETDATE(),
+    updated_at DATETIME DEFAULT GETDATE()
 );
 
--- Criação da tabela de chats para referência
+-- Tabela de chats
 CREATE TABLE chats (
-    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    descricao NVARCHAR(100) NOT NULL
+    id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    user_id UNIQUEIDENTIFIER NOT NULL,
+    title NVARCHAR(255) DEFAULT 'Novo Chat',
+    created_at DATETIME DEFAULT GETDATE(),
+    updated_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Criação da tabela de logs de interação com foreign keys para chat_id e usuario_id
-CREATE TABLE log_interacoes (
-    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    usuario_id UNIQUEIDENTIFIER NOT NULL,
-    nome_usuario NVARCHAR(100) NOT NULL,
-    prompt_entrada NVARCHAR(MAX) NOT NULL,
-    resposta_chat NVARCHAR(MAX) NOT NULL,
-    data_pergunta DATETIME DEFAULT GETDATE(),
+-- Tabela de mensagens
+CREATE TABLE messages (
+    id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
     chat_id UNIQUEIDENTIFIER NOT NULL,
-    -- Definição das chaves estrangeiras
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-    FOREIGN KEY (chat_id) REFERENCES chats(id)
+    user_id UNIQUEIDENTIFIER, -- NULL para mensagens do sistema
+    role NVARCHAR(50) CHECK (role IN ('user', 'assistant')) NOT NULL,
+    content NVARCHAR(MAX) NOT NULL,
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE NO ACTION -- Sem ação para evitar ciclos
 );
 
--- Inserção de registros de exemplo nas tabelas usuários e chats
-INSERT INTO usuarios (nome) VALUES ('João Silva');
-INSERT INTO chats (descricao) VALUES ('Chat sobre geografia');
-
--- Inserção de um registro de exemplo na tabela log_interacoes
-INSERT INTO log_interacoes (usuario_id, nome_usuario, prompt_entrada, resposta_chat, chat_id)
-VALUES
-    (
-        (SELECT id FROM usuarios WHERE nome = 'João Silva'), 
-        'João Silva', 
-        'Qual é a capital da França?', 
-        'A capital da França é Paris.', 
-        (SELECT id FROM chats WHERE descricao = 'Chat sobre geografia')
-    );
-
--- Consultar todos os registros de log
-SELECT * FROM log_interacoes;
+-- Tabela de logs
+CREATE TABLE logs (
+    id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+    user_id UNIQUEIDENTIFIER NOT NULL,
+    chat_id UNIQUEIDENTIFIER,
+    action NVARCHAR(255) NOT NULL,
+    detail NVARCHAR(MAX),
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE
+);

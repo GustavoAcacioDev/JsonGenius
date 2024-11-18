@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Check, Code, GitCompare, Hammer, Search, Zap } from "lucide-react";
-import { Button } from "../ui/shadcn/button";
 import FeaturesCard, { TFeaturesCardProp } from '../components/FeaturesCard';
 import Header from '../components/Header/Header';
+import { Button } from '../components/ui/shadcn/Button';
+import { Navigate } from 'react-router-dom';
+import { isAuthenticated } from '../Router/PrivateRoute';
 
 const featuresList: TFeaturesCardProp[] = [
   {
@@ -44,7 +46,7 @@ const featuresList: TFeaturesCardProp[] = [
 ]
 
 function Home() {
-  return (
+  return isAuthenticated() ? <Navigate to="/chat" /> : (
     <div className="flex flex-col min-h-screen">
       <Header />
 

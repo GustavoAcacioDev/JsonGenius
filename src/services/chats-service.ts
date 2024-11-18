@@ -1,3 +1,4 @@
+import { getToken } from "../lib/utils";
 import axios from "axios";
 
 interface IChatGPTResponse {
@@ -39,9 +40,9 @@ export interface IChatListItem {
  * @returns {Promise<string>} - Resposta gerada pelo ChatGPT.
  */
 
-async function sendMessageToChatGPT(message: string): Promise<IChatGPTResponse> {
+async function sendMessageToChatGPT(message: string, chatId: string, userId: string): Promise<IChatGPTResponse> {
     try {
-      const response = await axios.post('http://localhost:3000/chat', { message, chat_id: '2B25116B-BE8A-480A-8E71-B2E4BAF07F9B', user_id: '26ABD48E-2902-4C44-87FE-BA2A8760D505' });
+      const response = await axios.post('http://localhost:3000/chat', { message, chat_id: chatId, user_id: userId });
   
       return response.data
     } catch (error) {
@@ -52,7 +53,10 @@ async function sendMessageToChatGPT(message: string): Promise<IChatGPTResponse> 
 
 async function createChat() {
   try {
-    const response = await axios.post('http://localhost:3000/novo-chat');
+    const body = {
+      userId: getToken()?.userId || ''
+    }
+    const response = await axios.post('http://localhost:3000/novo-chat', body);
 
     return response
   } catch (error) {
@@ -72,4 +76,26 @@ async function getChatList(userId: string): Promise<IChatList> {
   }
 }
 
-export { sendMessageToChatGPT, createChat, getChatList }
+async function getChatMessages(chatId: string) {
+  try {
+    const response = await axios.get(`http://localhost:3000/mensagens?chatId=${chatId}`);
+
+    return response.data
+  } catch (error) {
+    console.error('Error in createChat:', error);
+    throw new Error('Failed to get chat list');  
+  }
+}
+
+async function deleteChatMessages(chatId: string) {
+  try {
+    const response = await axios.delete(`http://localhost:3000/chat/${chatId}/delete`);
+
+    return response.data
+  } catch (error) {
+    console.error('Error in deleteChat:', error);
+    throw new Error('Failed to delete chat list');  
+  }
+}
+
+export { sendMessageToChatGPT, createChat, getChatList, getChatMessages, deleteChatMessages }

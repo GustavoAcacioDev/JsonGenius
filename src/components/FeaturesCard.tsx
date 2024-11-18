@@ -1,7 +1,7 @@
-import { LucideIcon, Zap } from 'lucide-react'
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '../ui/shadcn/card'
+import { LucideIcon } from 'lucide-react'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from './ui/shadcn/card'
 
 export type TFeaturesCardProp = { 
     title: string, 

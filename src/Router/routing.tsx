@@ -3,6 +3,7 @@ import React from "react";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import ChatPage from "../pages/Chat";
 import Login from "../pages/Login";
+import Signup from "../pages/Signup";
 import PrivateRoute from "./PrivateRoute";
 
 
@@ -12,6 +13,7 @@ const Routing = () => {
         <BrowserRouter>
             <Routes>
                 <Route Component={Login} path="/login" />
+                <Route Component={Signup} path="/signup" />
                 <Route Component={Home} path="/" />
                 <Route  element={<PrivateRoute component={ChatPage} />} path="/chat" />
             </Routes>

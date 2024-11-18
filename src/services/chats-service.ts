@@ -2,25 +2,25 @@ import { getToken } from "../lib/utils";
 import axios from "axios";
 
 interface IChatGPTResponse {
-    id: string;
-    object: string;
-    created: number;
-    model: string;
-    usage: {
-      prompt_tokens: number;
-      completion_tokens: number;
-      total_tokens: number;
-    };
-    choices: [
-      {
-        message: {
-          role: string;
-          content: string;
-        };
-        finish_reason: string;
-        index: number;
-      }
-    ];
+  id: string;
+  object: string;
+  created: number;
+  model: string;
+  usage: {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+  };
+  choices: [
+    {
+      message: {
+        role: string;
+        content: string;
+      };
+      finish_reason: string;
+      index: number;
+    }
+  ];
 }
 
 export interface IChatList {
@@ -41,14 +41,17 @@ export interface IChatListItem {
  */
 
 async function sendMessageToChatGPT(message: string, chatId: string, userId: string): Promise<IChatGPTResponse> {
-    try {
-      const response = await axios.post('http://localhost:3000/chat', { message, chat_id: chatId, user_id: userId });
-  
-      return response.data
-    } catch (error) {
-      console.error('Error in sendMessageToChatGPT:', error);
-      throw new Error('Failed to fetch response from ChatGPT service');
+  try {
+    const response = await axios.post('http://localhost:3000/chat', { message, chat_id: chatId, user_id: userId });
+    if (response.data.redirect) {
+      // Redirect to the new chat
+      window.location.href = response.data.redirect;
     }
+    return response.data
+  } catch (error) {
+    console.error('Error in sendMessageToChatGPT:', error);
+    throw new Error('Failed to fetch response from ChatGPT service');
+  }
 }
 
 async function createChat() {
@@ -61,7 +64,7 @@ async function createChat() {
     return response
   } catch (error) {
     console.error('Error in createChat:', error);
-    throw new Error('Failed to insert new chat into Database');  
+    throw new Error('Failed to insert new chat into Database');
   }
 }
 
@@ -72,7 +75,7 @@ async function getChatList(userId: string): Promise<IChatList> {
     return response.data
   } catch (error) {
     console.error('Error in createChat:', error);
-    throw new Error('Failed to get chat list');  
+    throw new Error('Failed to get chat list');
   }
 }
 
@@ -83,7 +86,7 @@ async function getChatMessages(chatId: string) {
     return response.data
   } catch (error) {
     console.error('Error in createChat:', error);
-    throw new Error('Failed to get chat list');  
+    throw new Error('Failed to get chat list');
   }
 }
 
@@ -94,7 +97,7 @@ async function deleteChatMessages(chatId: string) {
     return response.data
   } catch (error) {
     console.error('Error in deleteChat:', error);
-    throw new Error('Failed to delete chat list');  
+    throw new Error('Failed to delete chat list');
   }
 }
 

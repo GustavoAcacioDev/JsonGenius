@@ -1,7 +1,7 @@
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@radix-ui/react-dropdown-menu'
 import { ChevronDown, FileJson } from 'lucide-react'
-import { Button } from '../../ui/shadcn/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../../ui/shadcn/dropdown-menu';
 import React from 'react'
+import { Button } from '../ui/shadcn/Button'
 
 function Header() {
     return (

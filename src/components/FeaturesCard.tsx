@@ -7,7 +7,7 @@ export type TFeaturesCardProp = {
     title: string, 
     description: string, 
     Icon: LucideIcon, 
-    color: 'yellow' | 'green' | 'blue' | 'purple' | 'indigo' | 'red' 
+    color: 'text-yellow-500' | 'text-green-500' | 'text-blue-500' | 'text-purple-500' | 'text-indigo-500' | 'text-red-500' 
 }
 
 export default function FeaturesCard({ 
@@ -19,7 +19,7 @@ export default function FeaturesCard({
     return (
         <Card>
             <CardHeader>
-                <Icon className={twMerge("w-8 h-8 mb-2", color && `text-${color}-500`)} />
+                <Icon className={twMerge("w-8 h-8 mb-2", color)} />
                 <CardTitle>{title}</CardTitle>
             </CardHeader>
             <CardContent>

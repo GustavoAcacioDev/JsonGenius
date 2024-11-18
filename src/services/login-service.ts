@@ -33,4 +33,32 @@ const loginService = async (email: string, password: string) => {
   }
 };
 
-export default loginService;
+const signupService = async (username: string, email: string, password: string) => {
+  try {
+    // Send the signup request
+    const response = await axios.post('http://localhost:3000/signup', { username, email, password });
+
+    if (response.data.message === 'Usuário cadastrado com sucesso.') {
+      return {
+        success: true,
+        message: 'Usuário cadastrado com sucesso.',
+      };
+    } else {
+      // Handle errors from the server response
+      return {
+        success: false,
+        errors: response.data.errors || ['Erro desconhecido.'],
+      };
+    }
+  } catch (error: any) {
+    console.error('Erro ao realizar cadastro:', error);
+
+    // Handle network or unexpected errors
+    return {
+      success: false,
+      errors: ['Erro ao processar a solicitação. Verifique sua conexão e tente novamente.'],
+    };
+  }
+};
+
+export { loginService, signupService };

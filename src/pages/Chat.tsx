@@ -3,13 +3,13 @@
 import { useEffect, useState, useRef } from 'react'
 import { FileJson, Send, Check, Zap, Hammer, GitCompare, Search, Code, ChevronDown } from 'lucide-react'
 import ChatHeader from '../components/Header/ChatHeader'
-import { createChat, getChatList, getChatMessages, IChatListItem, sendMessageToChatGPT } from '../services/chats-service'
+import { createChat, getChatList, getChatMessages, sendMessageToChatGPT } from '../services/chats-service'
 import { formatDate } from '../lib/format'
 import { Button } from '../components/ui/shadcn/Button'
 import { Input } from '../components/ui/shadcn/Input'
 import { getToken } from '../lib/utils'
 import { useQuery } from '@tanstack/react-query'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import MessageDisplay, { MessageSkeleton } from '../components/MessageDisplay'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../components/ui/shadcn/dropdown-menu'
 import { twMerge } from 'tailwind-merge'
@@ -39,8 +39,6 @@ export default function ChatPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!userId || !chatId || !jsonInput.trim()) return;
-
         const newMessage = {
             content: jsonInput,
             chatId,
@@ -54,13 +52,12 @@ export default function ChatPage() {
         setIsSending(true);
 
         try {
-            await sendMessageToChatGPT(jsonInput, chatId, userId);
-            refetchMessages(); 
+            await sendMessageToChatGPT(`${selectedFeature}: ${jsonInput}`, chatId, userId);
+            refetchMessages();
         } catch (error) {
             console.error('Failed to send message:', error);
-            
         } finally {
-            setIsSending(false); 
+            setIsSending(false);
         }
     };
 
@@ -68,11 +65,11 @@ export default function ChatPage() {
         setSelectedFeature(feature);
     };
 
-    const handleCreateNewChat = () => {
-        createChat();
-        refetch();
+    const handleCreateNewChat = async () => {
+        const res = await createChat();
+        if (res) refetch();
     };
-    
+
     useEffect(() => {
         if (chatContainerRef.current && chatMessages) {
             setMessages(chatMessages.value)
@@ -109,7 +106,17 @@ export default function ChatPage() {
 
                 <div className="flex-grow flex flex-col p-4 gap-3 overflow-hidden">
                     <div ref={chatContainerRef} className="flex-grow overflow-y-auto">
-                        <MessageDisplay messages={messages} />
+                        {messages.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center h-full text-gray-500">
+                                <FileJson className="w-16 h-16 mb-4" />
+                                <h2 className="text-2xl font-bold mb-2">Bem-vindo ao JSON Genius</h2>
+                                <p className="text-center max-w-md">
+                                    Comece uma nova conversa selecionando uma funcionalidade e digitando sua pergunta ou colando seu JSON abaixo.
+                                </p>
+                            </div>
+                        ) : (
+                            <MessageDisplay messages={messages} />
+                        )}
                     </div>
 
                     <form onSubmit={handleSubmit} className="flex flex-col space-y-2">
